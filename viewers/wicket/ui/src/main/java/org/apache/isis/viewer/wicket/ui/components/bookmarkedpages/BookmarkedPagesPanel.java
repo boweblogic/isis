@@ -138,26 +138,29 @@ public class BookmarkedPagesPanel extends PanelAbstract<BookmarkedPagesModel> {
                     final PageType pageType = node.getPageType();
                     final Class<? extends Page> pageClass = pageClassRegistry.getPageClass(pageType);
 
+                    // toggle CSS pin state
                     final AjaxLink<Object> pinBookmarkLink = new AjaxLink<Object>(ID_PIN_BOOKMARK_LINK) {
 
                         private static final long serialVersionUID = 1L;
 
                         @Override
                         public void onClick(AjaxRequestTarget target) {
-                            if(!node.isPinned()) {
-                                bookmarkedPagesModel.pin(node);
-                                this.add(new CssClassAppender("text-success"));
-                            } else {
+                            if(node.isPinned()) {
                                 bookmarkedPagesModel.unpin(node);
-                                this.add(new CssClassAppender("text-muted"));
+                                applyCssForUnpin(this);
+                            } else {
+                                bookmarkedPagesModel.pin(node);
+                                applyCssForPin(this);
                             }
                         }
 
                     };
-                    if(!node.isPinned()) {
-                        pinBookmarkLink.add(new CssClassAppender("text-muted"));
+                    
+                    // set initial CSS for pin state
+                    if(node.isPinned()) {
+                        applyCssForPin(pinBookmarkLink);
                     } else {
-                        pinBookmarkLink.add(new CssClassAppender("text-success"));
+                        applyCssForUnpin(pinBookmarkLink);
                     }
 
                     final AjaxLink<Object> clearBookmarkLink = new AjaxLink<Object>(ID_CLEAR_BOOKMARK_LINK) {
@@ -247,5 +250,17 @@ public class BookmarkedPagesPanel extends PanelAbstract<BookmarkedPagesModel> {
         return helpText;
     }
 
+    // -- PINNING CSS
+    
+    private static void applyCssForPin(Component target) {
+        target.add(new CssClassAppender("text-success"));
+    }
+    
+    private static void applyCssForUnpin(Component target) {
+        target.add(new CssClassAppender("text-muted"));   
+    }
+    
+    
+    
 
 }

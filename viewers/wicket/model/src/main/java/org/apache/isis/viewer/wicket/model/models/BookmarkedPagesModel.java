@@ -120,17 +120,17 @@ public class BookmarkedPagesModel extends ModelAbstract<List<BookmarkTreeNode>> 
     }
 
     public void pin(BookmarkTreeNode rootNode) {
-        this.rootNodes.remove(rootNode);
-        this.rootNodes.add(0, rootNode);
         rootNode.pin();
         this.numPinned++;
+        this.rootNodes.remove(rootNode);
+        this.rootNodes.add(0, rootNode);
     }
 
     public void unpin(BookmarkTreeNode rootNode) {
-        this.rootNodes.remove(rootNode);
-        this.rootNodes.add(this.numPinned, rootNode);
         rootNode.unpin();
         this.numPinned--;
+        this.rootNodes.remove(rootNode);
+        this.rootNodes.add(rootNodes.size()-this.numPinned, rootNode);
     }
 
     public void clear() {

@@ -42,6 +42,10 @@ public class CssClassAppender extends AttributeAppender {
     public CssClassAppender(final String append) {
         this(Model.of(append));
     }
+    
+    public String getCssClass() {
+        return super.getAttribute();
+    }
 
     /**
      * Adds CSS class to tag (providing that the class is non-null and non-empty).
@@ -73,4 +77,5 @@ public class CssClassAppender extends AttributeAppender {
     public static String asCssStyle(final String str) {
         return str.replaceAll("[^A-Za-z0-9- ]", "").replaceAll("\\s+", "-");
     }
+    
 }
